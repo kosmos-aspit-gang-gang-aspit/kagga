@@ -9,8 +9,7 @@ class Mario(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 100
         self.rect.y = 100
-        self.speed = 10
-        self.clock = pygame.time.Clock()
+        self.speed = 2
 
     def move_up(self):
         self.rect.y -= self.speed
@@ -31,12 +30,14 @@ class Mario(pygame.sprite.Sprite):
 def game():
     pygame.init()
 
-    screen_width = 800
-    screen_height = 600
+    screen_width = pygame.display.Info().current_w
+    screen_height = pygame.display.Info().current_h
 
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
 
     mario = Mario()
+
+    pygame.time.Clock().tick(12)  # FPS cap
 
     all_sprites = pygame.sprite.Group()
     all_sprites.add(mario)
