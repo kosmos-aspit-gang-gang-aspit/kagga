@@ -1,5 +1,4 @@
 import os
-
 import pygame
 import keyboard
 from animation import AnimatedSprite
@@ -34,34 +33,35 @@ class Mario(AnimatedSprite):
         print("Space was pressed")
 
 
-def game():
-    pygame.init()
+class Game:
+    def __init__(self):
+        self.screen_width = pygame.display.Info().current_w
+        self.screen_height = pygame.display.Info().current_h
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
-    screen_width = pygame.display.Info().current_w
-    screen_height = pygame.display.Info().current_h
+        self.mario = Mario()
 
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    def game(self):
+        pygame.init()
 
-    mario = Mario()
+        pygame.time.Clock().tick(12)  # FPS cap
 
-    pygame.time.Clock().tick(12)  # FPS cap
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+            if keyboard.is_pressed('w'):
+                self.mario.move_up()
+            if keyboard.is_pressed('a'):
+                self.move_left()
+            if keyboard.is_pressed('s'):
+                self.move_down()
+            if keyboard.is_pressed('d'):
+                self.move_right()
 
-        if keyboard.is_pressed('w'):
-            mario.move_up()
-        if keyboard.is_pressed('a'):
-            mario.move_left()
-        if keyboard.is_pressed('s'):
-            mario.move_down()
-        if keyboard.is_pressed('d'):
-            mario.move_right()
+            self.mario.update()
 
-        mario.update()
-
-    pygame.quit()  # safely close pygame, i think.
+        pygame.quit()  # safely close pygame, i think.
 
