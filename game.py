@@ -1,16 +1,21 @@
+import os
 import pygame
 import keyboard
+from animation import AnimatedSprite
 
 
-class Mario(pygame.sprite.Sprite):
+class Mario(AnimatedSprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("sprites/image_7.png")
-        self.rect = self.image.get_rect()
-        self.rect.x = 100
-        self.rect.y = 100
-        self.speed = 10
-        self.clock = pygame.time.Clock()
+        # load mario sprites
+        _dir = "sprites/mario"
+        for filename in os.listdir(_dir):
+            filepath = os.path.join(_dir, filename)
+            pygame.image.load(filepath)
+
+        # init animation
+        super().__init__()
+
+        self.speed = 2
 
     def move_up(self):
         self.rect.y -= self.speed
@@ -24,41 +29,36 @@ class Mario(pygame.sprite.Sprite):
     def move_right(self):
         self.rect.x += self.speed
 
-    def use(self):
-        print("Space was pressed")
 
+class Game:
+    def __init__(self):
+        self.screen_width = pygame.display.Info().current_w
+        self.screen_height = pygame.display.Info().current_h
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
-def game():
-    pygame.init()
+        self.mario = Mario()
 
-    screen_width = 800
-    screen_height = 600
+    def game(self):
+        pygame.init()
 
-    screen = pygame.display.set_mode((screen_width, screen_height))
+        pygame.time.Clock().tick(12)  # FPS cap
 
-    mario = Mario()
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
 
-    all_sprites = pygame.sprite.Group()
-    all_sprites.add(mario)
+            if keyboard.is_pressed('w'):
+                self.mario.move_up()
+            if keyboard.is_pressed('a'):
+                self.mario.move_left()
+            if keyboard.is_pressed('s'):
+                self.mario.move_down()
+            if keyboard.is_pressed('d'):
+                self.mario.move_right()
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+            self.mario.update()
 
-        if keyboard.is_pressed('w'):
-            mario.move_up()
-        if keyboard.is_pressed('a'):
-            mario.move_left()
-        if keyboard.is_pressed('s'):
-            mario.move_down()
-        if keyboard.is_pressed('d'):
-            mario.move_right()
-
-        all_sprites.update()
-        all_sprites.draw(screen)
-        pygame.display.flip()
-
-    pygame.quit()
+        pygame.quit()  # safely close pygame, i think.
 
