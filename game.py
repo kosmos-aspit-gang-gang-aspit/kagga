@@ -55,11 +55,11 @@ class Game:
             if keyboard.is_pressed('w'):
                 self.mario.move_up()
             if keyboard.is_pressed('a'):
-                self.move_left()
+                self.mario.move_left()
             if keyboard.is_pressed('s'):
-                self.move_down()
+                self.mario.move_down()
             if keyboard.is_pressed('d'):
-                self.move_right()
+                self.mario.move_right()
 
             self.mario.update()
 
