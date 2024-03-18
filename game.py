@@ -1,14 +1,21 @@
+import os
+
 import pygame
 import keyboard
+from animation import AnimatedSprite
 
 
-class Mario(pygame.sprite.Sprite):
+class Mario(AnimatedSprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("sprites/image_7.png")
-        self.rect = self.image.get_rect()
-        self.rect.x = 100
-        self.rect.y = 100
+        # load mario sprites
+        _dir = "sprites/mario"
+        for filename in os.listdir(_dir):
+            filepath = os.path.join(_dir, filename)
+            pygame.image.load(filepath)
+
+        # init animation
+        super().__init__()
+
         self.speed = 2
 
     def move_up(self):
@@ -33,14 +40,11 @@ def game():
     screen_width = pygame.display.Info().current_w
     screen_height = pygame.display.Info().current_h
 
-    screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((screen_width, screen_height))
 
     mario = Mario()
 
     pygame.time.Clock().tick(12)  # FPS cap
-
-    all_sprites = pygame.sprite.Group()
-    all_sprites.add(mario)
 
     running = True
     while running:
@@ -57,9 +61,7 @@ def game():
         if keyboard.is_pressed('d'):
             mario.move_right()
 
-        all_sprites.update()
-        all_sprites.draw(screen)
-        pygame.display.flip()
+        mario.update()
 
-    pygame.quit()
+    pygame.quit()  # safely close pygame, i think.
 
