@@ -29,9 +29,6 @@ class Mario(AnimatedSprite):
     def move_right(self):
         self.rect.x += self.speed
 
-    def use(self):
-        print("Space was pressed")
-
 
 class Game:
     def __init__(self):
