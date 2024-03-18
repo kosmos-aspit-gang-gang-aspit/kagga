@@ -7,6 +7,8 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.images = images
         self.image = self.images[self.index]
         self.rect = self.image.get_rect()
+        self.rect.x = 100
+        self.rect.y = 100
 
 
     def update(self):
@@ -14,3 +16,5 @@ class AnimatedSprite(pygame.sprite.Sprite):
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[int(self.index)]
+
+
