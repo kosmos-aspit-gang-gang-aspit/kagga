@@ -1,5 +1,5 @@
-import keyboard
-from game import game
+from game import Game
 
 if __name__ == "__main__":
-    game()
+    game_instance = Game()
+    game_instance.game()

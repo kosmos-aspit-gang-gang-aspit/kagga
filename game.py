@@ -1,21 +1,26 @@
 import os
 import pygame
-import keyboard
 from animation import AnimatedSprite
 
 
 class Mario(AnimatedSprite):
-    def __init__(self):
+    def __init__(self, screen):
         # load mario sprites
+        sprites = []
         _dir = "sprites/mario"
         for filename in os.listdir(_dir):
             filepath = os.path.join(_dir, filename)
-            pygame.image.load(filepath)
+            sprite = pygame.image.load(filepath).convert_alpha()  # alpha conversion optimizes performance
+            sprites.append(sprite)
 
         # init animation
-        super().__init__()
+        super().__init__(sprites, screen)
 
-        self.speed = 2
+        self.speed = 10
+        self.moving = False
+        self.flipped = False
+        self.airborne = False
+        self.crouched = False
 
     def move_up(self):
         self.rect.y -= self.speed
@@ -32,16 +37,15 @@ class Mario(AnimatedSprite):
 
 class Game:
     def __init__(self):
+        pygame.init()
         self.screen_width = pygame.display.Info().current_w
         self.screen_height = pygame.display.Info().current_h
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 
-        self.mario = Mario()
+        self.mario = Mario(self.screen)
 
     def game(self):
-        pygame.init()
-
-        pygame.time.Clock().tick(12)  # FPS cap
+        clock = pygame.time.Clock()
 
         running = True
         while running:
@@ -49,16 +53,24 @@ class Game:
                 if event.type == pygame.QUIT:
                     running = False
 
-            if keyboard.is_pressed('w'):
+            keys = pygame.key.get_pressed()  # pygame has a built in keyboard function with better performance
+            if keys[pygame.K_w]:
                 self.mario.move_up()
-            if keyboard.is_pressed('a'):
+            if keys[pygame.K_a]:
                 self.mario.move_left()
-            if keyboard.is_pressed('s'):
+                self.mario.moving = True
+                self.mario.flipped = True
+            if keys[pygame.K_s]:
                 self.mario.move_down()
-            if keyboard.is_pressed('d'):
+                self.mario.crouched = True
+            if keys[pygame.K_d]:
                 self.mario.move_right()
+                self.mario.moving = True
+                self.mario.flipped = False
 
             self.mario.update()
+            self.mario.moving = False
+            self.mario.crouched = False
+            clock.tick(24)  # FPS cap
 
         pygame.quit()  # safely close pygame, i think.
-
