@@ -28,23 +28,24 @@ class Game:
                     running = False
 
             keys = pygame.key.get_pressed()  # pygame has a built in keyboard function with better performance
-            if keys[pygame.K_w]:
+            if keys[pygame.K_w] and not self.mario.airborne:
                 self.mario.move_up()
             if keys[pygame.K_a]:
                 self.mario.move_left()
-                self.mario.moving = True
-                self.mario.flipped = True
             if keys[pygame.K_s]:
                 self.mario.move_down()
-                self.mario.crouched = True
             if keys[pygame.K_d]:
                 self.mario.move_right()
+
+            if not (keys[pygame.K_a] or keys[pygame.K_d]):
+                self.mario.moving = False
+            else:
                 self.mario.moving = True
-                self.mario.flipped = False
 
             self.mario.update()
             self.mario.moving = False
             self.mario.crouched = False
+            self.mario.update(flipped=self.mario.flipped)
             map_group.update()
             map_group.draw(self.screen)
             pygame.display.update()
