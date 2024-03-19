@@ -1,5 +1,5 @@
 import pygame
-
+import constants
 
 class AnimatedSprite(pygame.sprite.Sprite):
     def __init__(self, images, screen):
@@ -18,6 +18,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[int(self.index)]
+        self.image = pygame.transform.scale_by(self.image, constants.scalar)
         # drawing moved here:
         self.screen.fill((0, 0, 0))  # clear the screen with black, placeholder for background
         self.screen.blit(self.image, self.rect)  # draw the sprite
