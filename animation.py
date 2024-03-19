@@ -1,5 +1,5 @@
 import pygame
-
+import constants
 
 class AnimatedSprite(pygame.sprite.Sprite):
     def __init__(self, idle_sprites, walking_sprites, jumping_sprites, screen):
@@ -18,6 +18,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[int(self.index)]
+        self.image = pygame.transform.scale_by(self.image, constants.scalar)
         # drawing moved here:
         self.image = pygame.transform.flip(self.images[int(self.index)], flipped, False)
         friction_coefficient = 0.7
