@@ -1,6 +1,7 @@
 from animation import AnimatedSprite
 import os
 import pygame
+import constants
 class Mario(AnimatedSprite):
     def __init__(self, screen, spawnpoint):
         # load mario sprites
@@ -11,16 +12,19 @@ class Mario(AnimatedSprite):
         for filename in os.listdir(_dir):
             filepath = os.path.join(_dir, filename)
             sprite = pygame.image.load(filepath).convert_alpha()  # alpha conversion optimizes performance
+            sprite = pygame.transform.scale_by(sprite, constants.scalar)
             idle_sprites.append(sprite)
         _dir = "sprites/mario/walking_sprites"
         for filename in os.listdir(_dir):
             filepath = os.path.join(_dir, filename)
             sprite = pygame.image.load(filepath).convert_alpha()  # alpha conversion optimizes performance
+            sprite = pygame.transform.scale_by(sprite, constants.scalar)
             walking_sprites.append(sprite)
         _dir = "sprites/mario/jumping_sprites"
         for filename in os.listdir(_dir):
             filepath = os.path.join(_dir, filename)
             sprite = pygame.image.load(filepath).convert_alpha()  # alpha conversion optimizes performance
+            sprite = pygame.transform.scale_by(sprite, constants.scalar)
             jumping_sprites.append(sprite)
 
         # init animation
