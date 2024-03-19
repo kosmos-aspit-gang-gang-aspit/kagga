@@ -14,11 +14,11 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.screen = screen
 
     def update(self, flipped):
+        # not entirely sure why this works just tried things
         self.index += self.animation_speed
         if self.index >= len(self.images):
             self.index = 0
         self.image = self.images[int(self.index)]
-        self.image = pygame.transform.scale_by(self.image, constants.scalar)
         # drawing moved here:
         self.image = pygame.transform.flip(self.images[int(self.index)], flipped, False)
         friction_coefficient = 0.7
@@ -27,6 +27,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.rect.x += self.vx
         self.rect.y += self.vy
         self.screen.fill((0, 0, 0))  # clear the screen with black, placeholder for background
+        self.image = pygame.transform.scale_by(self.image, constants.scalar)
         self.screen.blit(self.image, self.rect)  # draw the sprite
         pygame.display.flip()  # update the screen
         # not entirely sure why this works just tried things
