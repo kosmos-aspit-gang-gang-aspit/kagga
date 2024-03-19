@@ -21,13 +21,16 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.image = self.images[int(self.index)]
         # drawing moved here:
         self.image = pygame.transform.flip(self.images[int(self.index)], flipped, False)
-        friction_coefficient = 0.7
+        friction_coefficient = 0.7  # velocity factor
+        gravity = 3  # gravity factor
+        gravity_scale = 1.15  # gravity time scale
         self.vx *= friction_coefficient
         self.vy *= friction_coefficient
+        self.vy += gravity  # apply gravity
+        self.vy *= gravity_scale  # increase speed of gravity over time.
         self.rect.x += self.vx
         self.rect.y += self.vy
         self.screen.fill((0, 0, 0))  # clear the screen with black, placeholder for background
         self.image = pygame.transform.scale_by(self.image, constants.scalar)
         self.screen.blit(self.image, self.rect)  # draw the sprite
         pygame.display.flip()  # update the screen
-        # not entirely sure why this works just tried things
