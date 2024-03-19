@@ -22,13 +22,6 @@ class Mario(AnimatedSprite):
             filepath = os.path.join(_dir, filename)
             sprite = pygame.image.load(filepath).convert_alpha()  # alpha conversion optimizes performance
             jumping_sprites.append(sprite)
-        # load mario sprites
-        sprites = []
-        _dir = "sprites/mario"
-        for filename in os.listdir(_dir):
-            filepath = os.path.join(_dir, filename)
-            sprite = pygame.image.load(filepath).convert_alpha()  # alpha conversion optimizes performance
-            sprites.append(sprite)
 
         # init animation
         super().__init__(idle_sprites=idle_sprites, walking_sprites=walking_sprites, jumping_sprites=jumping_sprites, screen=screen)

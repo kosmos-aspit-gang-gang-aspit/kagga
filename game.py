@@ -42,10 +42,8 @@ class Game:
             else:
                 self.mario.moving = True
 
-            self.mario.update()
-            self.mario.moving = False
-            self.mario.crouched = False
             self.mario.update(flipped=self.mario.flipped)
+            self.mario.crouched = False
             map_group.update()
             map_group.draw(self.screen)
             pygame.display.update()
