@@ -16,34 +16,27 @@ def get_map(_screen=None):
     global screen
     screen_not_loaded = True if _screen is None or screen is None else False
 
-    game_map_sprites = []
+    game_map_sprites = pygame.sprite.Group()
     for gameobj in map_dict:
-        gameobj_export = pygame.sprite.Sprite()
         if gameobj["type"] == "block":
-            gameobj_export.image = pygame.image.load("sprites/environment/block.png")
-            gameobj_export.image = pygame.transform.scale_by(gameobj_export.image, constants.scalar)
-            gameobj_export.rect = gameobj_export.image.get_rect()
-            gameobj_export.rect.width = int(50 * constants.scalar)
-            gameobj_export.rect.height = int(50 * constants.scalar)
+            block_sprite = pygame.sprite.Sprite()  # Create sprite instance
 
+            block_sprite = pygame.sprite.Sprite()  # Create sprite instance
+            block_image = pygame.image.load("sprites/environment/block.png")
+            block_image = pygame.transform.scale(block_image, (int(50 * constants.scalar), int(50 * constants.scalar)))  # Scale image correctly
+            block_sprite.image = block_image
+            block_sprite.rect = block_sprite.image.get_rect()
+            block_sprite.rect.x = int(gameobj["pos"][0] * constants.scalar)
+            block_sprite.rect.y = int(gameobj["pos"][1] * constants.scalar)
 
-            gameobj_export.rect.x = int(gameobj["pos"][0] * constants.scalar)
-            gameobj_export.rect.y = int(gameobj["pos"][1] * constants.scalar)
+            game_map_sprites.add(block_sprite)  # Add the sprite to the group
 
-            game_map_sprites.append(gameobj_export)
         if gameobj["type"] == "mario_spawn":
             mario_spawn = [gameobj["pos"][0] * constants.scalar, gameobj["pos"][1] * constants.scalar]
             if screen_not_loaded:
                 print("Screen not passed or loaded, waiting with giving the game Mario.")
             else:
                 mario = char.Mario(_screen if screen is None else screen, mario_spawn)
-
-
-
-        # gameobj_export.rect.x = gameobj["pos"][0]
-        # gameobj_export.rect.y = gameobj["pos"][1]
-        #
-        # game_map_sprites.append(gameobj_export)
 
     return game_map_sprites
 

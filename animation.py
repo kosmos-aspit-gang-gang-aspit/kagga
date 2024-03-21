@@ -13,6 +13,7 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.rect.y = 100
         self.vx = 0
         self.vy = 0
+        self.airborne = False
         self.screen = screen
 
         # create hitbox
@@ -43,15 +44,20 @@ class AnimatedSprite(pygame.sprite.Sprite):
 
         self.hitbox.center = self.rect.center  # re-center hitbox
 
-        # check for collision here:
-        ground_collisions = pygame.sprite.spritecollide(self, ground_hitboxes, dokill=False)  #self.hitbox??
-        for ground_hitbox in ground_collisions:
+        # Adjusted collision detection
+        ground_collisions = pygame.sprite.spritecollide(self, ground_hitboxes, dokill=False)
+        for ground in ground_collisions:
+            # If falling down
             if self.vy > 0:
                 self.vy = 0
-                self.rect.bottom = ground_hitbox.top
+                self.rect.bottom = ground.rect.top
+                self.airborne = False
+            # Add more conditions here if needed, like jumping up and hitting the bottom of a block
 
         # draw
         self.screen.fill((0, 0, 0))  # clear the screen with black, placeholder for background
-        self.image = pygame.transform.scale_by(self.image, constants.scalar)
+        self.image = pygame.transform.scale(self.image, (int(self.rect.width * constants.scalar), int(self.rect.height * constants.scalar)))
+
+        # self.image = pygame.transform.scale_by(self.image, constants.scalar)
         self.screen.blit(self.image, self.rect)  # draw the sprite
         pygame.display.flip()  # update the screen

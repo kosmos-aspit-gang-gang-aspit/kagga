@@ -1,19 +1,17 @@
-import os
 import pygame
-from animation import AnimatedSprite
 import map as tilemap
 
 _map = tilemap.get_map()
 map_group = pygame.sprite.Group()
 map_group.add(_map)
-
+print(_map)
 
 class Game:
     def __init__(self):
         pygame.init()
         self.screen_width = pygame.display.Info().current_w
         self.screen_height = pygame.display.Info().current_h
-        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+        self.screen = pygame.display.set_mode((480, 320))
         tilemap.load_screen(self.screen)
         self.mario = tilemap.get_mario()
 
@@ -42,7 +40,7 @@ class Game:
             else:
                 self.mario.moving = True
 
-            self.mario.update(flipped=self.mario.flipped)
+            self.mario.update(flipped=self.mario.flipped, ground_hitboxes=_map)
             self.mario.crouched = False
             map_group.update()
             map_group.draw(self.screen)
